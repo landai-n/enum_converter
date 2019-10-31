@@ -43,6 +43,9 @@ namespace lenewt {
             equiv(const InternalType&& internal, const ExternalType&& external) :
                     equiv{std::forward<const InternalType>(internal), std::forward<const ExternalType>(external), type_t::Equiv} {}
 
+            equiv(const ExternalType&& external, const InternalType&& internal) :
+                    equiv{std::forward<const InternalType>(internal), std::forward<const ExternalType>(external), type_t::Equiv} {}
+
             const InternalType internal;
             const ExternalType external;
             const type_t type;
@@ -51,15 +54,13 @@ namespace lenewt {
             equiv(const InternalType&& internal, const ExternalType&& external, const type_t&& type) :
                     internal{internal}, external{external}, type{type} {}
         };
-        class external_proj : public equiv {
+        class projection : public equiv {
         public:
-            external_proj(const InternalType&& internal, const ExternalType&& external) :
-            equiv{std::forward<const InternalType>(internal), std::forward<const ExternalType>(external), equiv::type_t::External} {}
-        };
-        class internal_proj : public equiv {
-        public:
-            internal_proj(const InternalType&& internal, const ExternalType&& external) :
-            equiv{std::forward<const InternalType>(internal), std::forward<const ExternalType>(external), equiv::type_t::Internal} {}
+            projection(const InternalType&& internal, const ExternalType&& external) :
+                    equiv{std::forward<const InternalType>(internal), std::forward<const ExternalType>(external), equiv::type_t::Internal} {}
+
+            projection(const ExternalType&& external, const InternalType&& internal) :
+                    equiv{std::forward<const InternalType>(internal), std::forward<const ExternalType>(external), equiv::type_t::External} {}
         };
 
         class duplicate_enum_error : public std::invalid_argument {
