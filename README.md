@@ -1,4 +1,5 @@
 
+
 # enum_converter
 enum_converter is a secure C++17 enum converter
 
@@ -15,11 +16,9 @@ Constructor
 
     const auto& converter = Converter { 
 	    Converter::equiv{InternalEnum::ValueA, ExternalEnum::ValueA}, // set a bidirectional conversion mapping
-	    ...
-	    Converter::internal_proj{InternalEnum::ValueB, ExternalEnum::ValueOther}, // set a monodirectional conversion from InternalEnum to ExternalEnum
-	    ....
-	    Converter::external_proj{InternalEnum::ValueOther, ExternalEnum::ValueC}, // set a monodirectional conversion from ExternalEnum to InternalEnum
-	    ...
+	    Converter::equiv{ExternalEnum::ValueB, InternalEnum::ValueB}, // same as above
+	    Converter::projection{InternalEnum::ValueFoo, ExternalEnum::ValueOther}, // set a monodirectional conversion from InternalEnum to ExternalEnum
+	    Converter::projection{ExternalEnum::ValueBar, InternalEnum::ValueOther}, // set a monodirectional conversion from ExternalEnum to InternalEnum
     };
 Cast enum values (Throw lenewt::enum_converter::undefined_enum_error if nothing match)
 
@@ -62,8 +61,8 @@ Used with strings equivalent
 	    VehicleConverter::equiv{InternalVehicle::Car, Vehicle::Car},
 	    VehicleConverter::equiv{InternalVehicle::Bus, Vehicle::Bus},
 	    VehicleConverter::equiv{InternalVehicle::Bike, Vehicle::Bike},
-	    VehicleConverter::internal_proj{InternalVehicle::Boat, Vehicle::Unknown},
-	    VehicleConverter::external_proj{InternalVehicle::Car, Vehicle::ElectricCar}
+	    VehicleConverter::projection{InternalVehicle::Boat, Vehicle::Unknown},
+	    VehicleConverter::projection{Vehicle::ElectricCar, InternalVehicle::Car}
     };
     
     Vehicle car = vehicleConverter.cast(InternalVehicle::Car); // Vehicle::Car
@@ -71,4 +70,3 @@ Used with strings equivalent
     
     InternalVehicle internalCar = vehicleConverter.cast(Vehicle::ElectricCar); // InternalVehicle::car
     
-
